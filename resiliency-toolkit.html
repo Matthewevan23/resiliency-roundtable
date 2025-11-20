@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Prompt Starter Kit - Resiliency Roundtable</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #164B5C 0%, #1a5f73 100%);
+            color: white;
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .logo {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+        
+        .logo-brackets {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .bracket {
+            width: 15px;
+            height: 60px;
+            background: #F4A460;
+        }
+        
+        .bracket-left {
+            border-radius: 0 30px 30px 0;
+        }
+        
+        .bracket-right {
+            border-radius: 30px 0 0 30px;
+        }
+        
+        .header-text h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            color: #F4A460;
+        }
+        
+        .header-text p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+        
+        .intro {
+            padding: 40px;
+            background: #f8fafc;
+            border-bottom: 3px solid #F4A460;
+        }
+        
+        .intro h2 {
+            color: #164B5C;
+            margin-bottom: 15px;
+        }
+        
+        .build-section {
+            background: linear-gradient(135deg, #fff5e6 0%, #ffe8cc 100%);
+            padding: 40px;
+            border-bottom: 3px solid #F4A460;
+        }
+        
+        .build-section h2 {
+            color: #164B5C;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #164B5C;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+        
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.95em;
+            min-height: 80px;
+            resize: vertical;
+        }
+        
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #F4A460;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.05em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-claude {
+            background: linear-gradient(135deg, #F4A460 0%, #e89850 100%);
+            color: white;
+        }
+        
+        .btn-claude:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(244, 164, 96, 0.4);
+        }
+        
+        .btn-copy {
+            background: linear-gradient(135deg, #164B5C 0%, #1a5f73 100%);
+            color: white;
+        }
+        
+        .btn-copy:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(22, 75, 92, 0.4);
+        }
+        
+        .btn-copy.copied {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .category {
+            margin-bottom: 40px;
+        }
+        
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #F4A460;
+        }
+        
+        .category-icon {
+            font-size: 2em;
+        }
+        
+        .category-title {
+            font-size: 1.5em;
+            color: #164B5C;
+        }
+        
+        .scenario-card {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .scenario-card:hover {
+            border-color: #F4A460;
+            box-shadow: 0 4px 12px rgba(244, 164, 96, 0.2);
+        }
+        
+        .scenario-header {
+            padding: 20px;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .scenario-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #164B5C;
+        }
+        
+        .expand-icon {
+            font-size: 1.5em;
+            color: #F4A460;
+            transition: transform 0.3s ease;
+        }
+        
+        .expand-icon.expanded {
+            transform: rotate(180deg);
+        }
+        
+        .scenario-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .scenario-content.expanded {
+            max-height: 2000px;
+        }
+        
+        .scenario-body {
+            padding: 20px;
+            background: white;
+            border-top: 2px solid #e2e8f0;
+        }
+        
+        .prompt-box {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            margin: 15px 0;
+            white-space: pre-wrap;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .action-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .copy-btn {
+            background: #164B5C;
+            color: white;
+        }
+        
+        .copy-btn:hover {
+            background: #1a5f73;
+        }
+        
+        .claude-btn {
+            background: #F4A460;
+            color: white;
+        }
+        
+        .claude-btn:hover {
+            background: #e89850;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <div class="logo-brackets">
+                    <div class="bracket bracket-left"></div>
+                    <div class="bracket bracket-right"></div>
+                </div>
+            </div>
+            <div class="header-text">
+                <h1>AI Prompt Starter Kit</h1>
+                <p>Resiliency Roundtable: Ready-to-use prompts for teen/adolescent educators</p>
+                <p style="font-size: 0.9em; margin-top: 5px;">Facilitated by Evan Wolkenstein | Jewish Learning Works</p>
+            </div>
+        </div>
+        
+        <div class="intro">
+            <h2>How to Use This Resource</h2>
+            <p><strong>Two ways to get help:</strong></p>
+            <ol style="margin: 15px 0 15px 30px;">
+                <li><strong>Build your own prompt</strong> using the template below</li>
+                <li><strong>Use a pre-made prompt</strong> from the library further down</li>
+            </ol>
+            <p><em>Bookmark this page for quick access whenever you need AI help!</em></p>
+        </div>
+        
+        <div class="build-section">
+            <h2>✨ Build Your Own Prompt</h2>
+            <p style="margin-bottom: 20px;">Fill in the template, then click to launch it into Claude!</p>
+            
+            <div class="form-group">
+                <label>🎯 CONTEXT: Who are you? Who's your audience? What's the situation?</label>
+                <textarea id="context" placeholder="Example: I'm teaching 8th graders who just finished a trust falls activity. Some students participated fully, others held back..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>✍️ TASK: What do you need? What's the goal?</label>
+                <textarea id="task" placeholder="Example: Generate reflection prompts that help students discover that vulnerability comes before trust, not after..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>⚡ CONSTRAINTS: Tone, length, what to include/avoid?</label>
+                <textarea id="constraints" placeholder="Example: Use a talking circle format. Start concrete, build to philosophical. Create productive tension without forcing fake insights..."></textarea>
+            </div>
+            
+            <div class="button-group">
+                <button onclick="openInClaude()" class="btn btn-claude">🤖 Open in Claude</button>
+                <button onclick="copyPrompt()" class="btn btn-copy" id="copy-btn">📋 Copy to Clipboard</button>
+            </div>
+        </div>
+        
+        <div class="content">
+            <!-- CATEGORY 1: Reflection & Debrief -->
+            <div class="category">
+                <div class="category-header">
+                    <span class="category-icon">💬</span>
+                    <h2 class="category-title">Reflection & Debrief Mastery</h2>
+                </div>
+                <div id="reflection-scenarios"></div>
+            </div>
+            
+            <!-- CATEGORY 2: Culturally Responsive Teaching -->
+            <div class="category">
+                <div class="category-header">
+                    <span class="category-icon">🌟</span>
+                    <h2 class="category-title">Culturally Responsive Curriculum</h2>
+                </div>
+                <div id="cultural-scenarios"></div>
+            </div>
+            
+            <!-- CATEGORY 3: Discussion Facilitation -->
+            <div class="category">
+                <div class="category-header">
+                    <span class="category-icon">💭</span>
+                    <h2 class="category-title">Discussion & Dialogue Facilitation</h2>
+                </div>
+                <div id="discussion-scenarios"></div>
+            </div>
+            
+            <!-- CATEGORY 4: Differentiation & Inclusion -->
+            <div class="category">
+                <div class="category-header">
+                    <span class="category-icon">🎨</span>
+                    <h2 class="category-title">Differentiated Instruction</h2>
+                </div>
+                <div id="differentiation-scenarios"></div>
+            </div>
+            
+            <!-- CATEGORY 5: Student Voice & Co-Design -->
+            <div class="category">
+                <div class="category-header">
+                    <span class="category-icon">🗳️</span>
+                    <h2 class="category-title">Co-Design & Shared Decision-Making</h2>
+                </div>
+                <div id="codesign-scenarios"></div>
+            </div>
+            
+            <!-- CATEGORY 6: Place-Based Learning -->
+            <div class="category">
+                <div class="category-header">
+                    <span class="category-icon">🌲</span>
+                    <h2 class="category-title">Place-Based & Environmental Education</h2>
+                </div>
+                <div id="placebased-scenarios"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const scenarios = {
+            reflection: [
+                {
+                    title: "After Wilderness Challenge - Deep Reflection",
+                    prompt: `CONTEXT: I just led 15 tenth-graders through a high ropes course. Some climbed to the top, some stopped halfway, some chose not to climb at all. The group on the ground was amazing at cheering everyone on. Now we're debriefing.
+
+TASK: Generate 8-10 reflection questions that move from concrete → analytical → transfer. Help students discover that choosing your challenge level is itself an act of leadership, and that supporting from the ground is as important as doing the physical challenge.
+
+CONSTRAINTS: Start with "what happened" questions to ground everyone. Build to questions about fear, trust, and leadership. End with transfer to their real lives. Use language that honors all participation levels - don't make climbers the heroes. Talking circle format, so questions should invite stories.`
+                },
+                {
+                    title: "After Heated Class Debate - Metaphor Processing",
+                    prompt: `CONTEXT: My 11th graders just had an intense debate about reparations. Voices were raised, some students got emotional, and we ended on a tense note. Tomorrow we need to process what happened without re-igniting the conflict.
+
+TASK: Create metaphor-based reflection prompts that help students make meaning of what happened and see patterns they can transfer to future disagreements.
+
+CONSTRAINTS: Don't ask "how did that feel" - they already know. Use metaphors to create distance and insight (weather, seasons, journeys, etc.). Help them see productive conflict vs. harmful conflict. End with commitments for future discussions. Keep it under 30 minutes. Use journaling or partner shares, not whole-group at first.`
+                },
+                {
+                    title: "Movement-Based Reflection Protocol",
+                    prompt: `CONTEXT: I'm working with 9th graders who resist talking circles and journaling. They're kinesthetic learners who process better through movement. We just finished a community-building activity.
+
+TASK: Design a reflection sequence that uses physical movement and spatial positioning to help students process their experience and articulate insights.
+
+CONSTRAINTS: Should take 15-20 minutes. Include at least 3 different movement activities. Build from simple to complex. End with a way to capture insights verbally or in writing. Make it feel playful but purposeful - not forced or cheesy.`
+                }
+            ],
+            cultural: [
+                {
+                    title: "Centering Indigenous Resistance in Colonial History",
+                    prompt: `CONTEXT: I'm teaching 9th grade World History. Our colonialism unit is very Eurocentric - it's all about what European powers DID TO colonized peoples. My students are diverse (Latinx, Asian American, Black, white) in Oakland, CA. I want to center indigenous agency, resistance, and survival.
+
+TASK: Redesign this 2-week unit to center indigenous perspectives. Show indigenous peoples as strategic actors who shaped their own futures, not just victims. Include examples from multiple continents.
+
+CONSTRAINTS: Don't erase the violence and oppression - acknowledge it - but don't make it the whole story. Use primary sources from indigenous voices when possible. Connect historical resistance to contemporary indigenous movements students might know. Make the through-line: "Colonialism happened, AND indigenous peoples resisted, survived, and continue to shape history."`
+                },
+                {
+                    title: "Windows & Mirrors Text Pairings",
+                    prompt: `CONTEXT: I'm teaching 7th grade ELA. I have a very diverse class - students from Mexican, Salvadoran, Chinese, Filipino, Ethiopian, and white backgrounds. We're starting a unit on identity and belonging. I want every student to see themselves in at least one text AND learn about experiences different from their own.
+
+TASK: Generate a "text set" of 6-8 short pieces (articles, poems, short stories, spoken word videos) that represent my students' identities and create opportunities for cross-cultural learning.
+
+CONSTRAINTS: Mix genres and formats. Include at least 2 pieces that specifically center immigrant/refugee experiences. Make sure there are texts where Jewish identity is present (I teach at a Jewish school). Texts should be accessible for 7th grade reading levels. Each text should be under 15 minutes to read/watch.`
+                },
+                {
+                    title: "Adapting Lesson to Honor Multiple Ways of Knowing",
+                    prompt: `CONTEXT: I'm teaching a science lesson on the water cycle to 6th graders. The standard curriculum is very Western/scientific-method focused. Several of my students come from cultures with their own traditional ecological knowledge (Native Hawaiian, Indigenous Mexican, etc.).
+
+TASK: Adapt this lesson to include indigenous/traditional knowledge systems alongside Western science. Show how different cultures have understood and worked with water cycles.
+
+CONSTRAINTS: Don't treat indigenous knowledge as "cute folklore" - present it as legitimate science. Find ways both knowledge systems can inform each other. Include specific examples from at least 2 non-Western traditions. Keep the learning goal the same (understanding water cycles) but expand the sources of knowledge.`
+                }
+            ],
+            discussion: [
+                {
+                    title: "Philosophical Chairs - Hot Topic",
+                    prompt: `CONTEXT: I'm teaching 10th grade and we're about to do philosophical chairs on the statement: "It's okay to separate art from the artist." Students will physically move to "agree" or "disagree" sides of the room. This could get heated - we have students with strong opinions about cancel culture, accountability, and who gets second chances.
+
+TASK: Generate 6-8 prompts for philosophical chairs that scaffold from easier to harder, force real moral reckoning, and make sure there are legitimate arguments on both sides.
+
+CONSTRAINTS: Start with a simpler binary, build to more nuanced statements. Avoid prompts that just let kids virtue-signal. Use specific examples (Kanye, R. Kelly, J.K. Rowling, etc.) to make it concrete. Include prompts that make both sides uncomfortable. End with a prompt that moves beyond agree/disagree to complexity.`
+                },
+                {
+                    title: "Socratic Seminar on Jewish Text",
+                    prompt: `CONTEXT: My 8th graders are reading the Binding of Isaac (Akeidah) for the first time. This text is disturbing - God asks Abraham to sacrifice his son. Students will have strong reactions. Some will defend it as a test of faith, some will be horrified.
+
+TASK: Generate 10-12 Socratic seminar questions that move from concrete text analysis → interpretation → philosophical/ethical questions → personal meaning.
+
+CONSTRAINTS: Start by grounding everyone in what actually happens in the text. Build to harder questions about obedience, faith, parental responsibility, and God's character. Create space for students to struggle with the text - don't force resolution. Include questions that connect to their lives (what would you do? when has someone you trusted asked you to do something that felt wrong?). Honor that some students come from religious families and some don't.`
+                },
+                {
+                    title: "Restorative Conversation After Conflict",
+                    prompt: `CONTEXT: Two students in my 11th grade class had a public disagreement that got personal. One student made a comment about the other's appearance, the other responded by saying the first student "only cares about popularity." Both are hurt and angry. The class watched it happen and feels awkward. We need a restorative conversation tomorrow.
+
+TASK: Design a 30-minute restorative circle for these two students (plus me as facilitator) that helps them understand impact, take responsibility, and rebuild some trust - without forcing fake reconciliation.
+
+CONSTRAINTS: Start with grounding/centering activity. Use sentence stems and "I statements." Move through: what happened (facts), what I felt, what I needed, what I understand now, how I want to move forward. Give space for emotions but keep it from escalating again. End with commitments, not demands for apologies. Acknowledge that repair takes time - this is just a start.`
+                }
+            ],
+            differentiation: [
+                {
+                    title: "Same Concept, 4 Learning Styles",
+                    prompt: `CONTEXT: I'm teaching the concept of "theme" in literature to 7th graders. I have students with ADHD, dyslexia, autism, anxiety, and different processing speeds. The traditional "read a story and identify the theme" approach doesn't work for everyone.
+
+TASK: Create 4 versions of the same lesson for different learning styles: visual/spatial, kinesthetic/movement, verbal/linguistic, and logical/sequential. All paths should lead to the same understanding of theme.
+
+CONSTRAINTS: Same learning goal (understand that theme is the deeper meaning/life lesson in a story). Same time limit (30 minutes). All versions should use the same short text (you pick an appropriate 7th grade story). Assessment should work across all versions. Make sure neurodiverse students aren't just getting "easier" work - it's different paths to the same rigor.`
+                },
+                {
+                    title: "Choose Your Own Adventure Project",
+                    prompt: `CONTEXT: My 9th graders are finishing a unit on the Civil Rights Movement. For their final project, I want them to demonstrate mastery of the content, but I want to offer multiple pathways so students can play to their strengths.
+
+TASK: Design a "choose your own adventure" final project with 5-6 different options that all assess the same core knowledge and skills, but allow for different modalities and interests.
+
+CONSTRAINTS: All options should require research, analysis, and synthesis - not just creative expression. Options should include: something written, something visual/artistic, something performance-based, something tech/media-based, and something community-engaged. Rubric should work across all options. Make sure each path is equally rigorous, just different.`
+                },
+                {
+                    title: "Scaffolded Question Sequence for Mixed Abilities",
+                    prompt: `CONTEXT: I have 8th graders at very different reading levels (4th grade to 11th grade) in the same class. We're reading Night by Elie Wiesel. I need discussion questions that meet everyone where they are.
+
+TASK: Create a scaffolded sequence of 12 questions that moves from concrete → abstract, with multiple entry points so struggling readers can access the conversation and advanced readers are still challenged.
+
+CONSTRAINTS: Start with questions about what literally happens (accessible to all). Build to interpretation and inference (medium). End with philosophical/transfer questions (hardest). Label which questions are entry-level, which are medium, which are advanced. Make sure even students at lower reading levels can contribute meaningfully to the hard questions if they've understood the earlier ones.`
+                }
+            ],
+            codesign: [
+                {
+                    title: "Student-Designed Classroom Norms",
+                    prompt: `CONTEXT: I'm starting the school year with 10th graders. Instead of me creating classroom rules, I want students to have real input in designing our norms and expectations together. But I can't just say "anything goes" - there are non-negotiables (safety, respect, learning happens).
+
+TASK: Design a 60-minute co-design process where students genuinely shape our classroom culture, but with guardrails that ensure a functional learning environment.
+
+CONSTRAINTS: Include: 1) Me naming the non-negotiables upfront, 2) Structured brainstorming/ideation, 3) Small group synthesis, 4) Whole-class consensus-building, 5) A way to write it down and revisit it later. Make sure quieter students have voice, not just the loud ones. End with commitments everyone can live with.`
+                },
+                {
+                    title: "Town Hall for Real Decision-Making",
+                    prompt: `CONTEXT: My 11th graders are frustrated with how much homework they have across classes. Instead of dismissing it, I want to hold a town hall where they have real input on homework policy in MY class - and where their voice might actually change what happens.
+
+TASK: Create a town hall structure for a 45-minute class where students can give meaningful input on homework policy, I can share my constraints, and we can co-create a solution.
+
+CONSTRAINTS: I can't eliminate homework entirely (school policy). I need students to practice skills outside class. But I CAN adjust amount, format, deadlines, flexibility. The structure should include: setting the scope (what's on/off the table), gathering student input (not just complaints - actual ideas), my constraints/needs, collaborative problem-solving, and decision/next steps. This should feel like authentic power-sharing, not fake "we'll consider it."`
+                },
+                {
+                    title: "Student Feedback Loop That Actually Changes Things",
+                    prompt: `CONTEXT: I teach 9th grade English. Halfway through the year, I want students to give me feedback on what's working and what's not in our class - AND I want to show them that their feedback matters by actually making changes.
+
+TASK: Design a feedback process that gathers honest student input, helps me identify patterns, and includes a "you spoke, we changed" follow-up so students see their voice had impact.
+
+CONSTRAINTS: Needs to be anonymous (so students are honest). Mix scaled questions and open-ended. Should take under 10 minutes. Must ask about: teaching methods, pacing, assessments, classroom culture. Include a question like "if you could change one thing about this class, what would it be?" After I analyze results, I need a plan for communicating back: "Here's what I heard. Here's what I'm changing. Here's what I can't change and why."`
+                }
+            ],
+            placebased: [
+                {
+                    title: "Site-Specific Learning Experiences",
+                    prompt: `CONTEXT: I'm taking 8th graders on a field study to a local creek that runs through an urban park in our neighborhood. Instead of a generic "observe nature" worksheet, I want activities that are specific to THIS place and connect ecology, culture, and student identity.
+
+TASK: Generate 8-10 learning experiences that are unique to this urban creek site and help students develop "sense of place."
+
+CONSTRAINTS: Mix ecological observation, cultural/historical investigation, and personal meaning-making. Include at least 2 activities that connect to indigenous history of this place. Include at least 1 activity where students interview community members (older neighbors, park staff, etc.). Some activities solo, some partner, some group. Some scientific, some artistic, some reflective. End with students creating something that shows their connection to this place.`
+                },
+                {
+                    title: "Phenology Calendar for Our Location",
+                    prompt: `CONTEXT: I teach environmental science to 9th graders in the Bay Area. I want students to track seasonal changes in our specific ecosystem throughout the school year - but make it more than just "when do leaves change" (which barely happens here).
+
+TASK: Design a phenology calendar project where students track and document seasonal patterns specific to Mediterranean coastal California.
+
+CONSTRAINTS: Include: plant blooming/dormancy, animal migration/behavior, weather patterns, and human cultural practices tied to seasons. Make it hyperlocal - specific to our schoolyard/neighborhood. Students should make predictions, observe weekly, document (photos/notes/sketches), and analyze patterns over time. Connect to both ecological systems AND human relationship to place (when do farmers plant? when do Jewish holidays fall? when does fog season start?).`
+                },
+                {
+                    title: "Connecting Ecological + Cultural + Personal Knowledge",
+                    prompt: `CONTEXT: I'm teaching a unit on water to 7th graders. We live in drought-prone California. Instead of just teaching the water cycle, I want students to understand our watershed, the political/cultural dimensions of water use, and their personal relationship to water.
+
+TASK: Design a 3-week integrated unit that weaves together ecological science, cultural knowledge, and personal meaning-making around water in our region.
+
+CONSTRAINTS: Include: 1) Science of our local watershed (where does our water come from?), 2) Indigenous water knowledge and practices from this region, 3) Current water politics/conflicts (agriculture vs. urban use, environmental flows), 4) Students' personal water use/relationship to water, 5) Action project where students do something real about water. Make connections across all these layers explicit - not separate modules.`
+                }
+            ]
+        };
+        
+        function createScenarioCards() {
+            Object.keys(scenarios).forEach(category => {
+                const container = document.getElementById(category + '-scenarios');
+                scenarios[category].forEach((scenario, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'scenario-card';
+                    card.innerHTML = `
+                        <div class="scenario-header" onclick="toggleScenario('${category}-${index}')">
+                            <div class="scenario-title">${scenario.title}</div>
+                            <div class="expand-icon" id="icon-${category}-${index}">▼</div>
+                        </div>
+                        <div class="scenario-content" id="content-${category}-${index}">
+                            <div class="scenario-body">
+                                <div class="prompt-box">${scenario.prompt}</div>
+                                <div class="action-buttons">
+                                    <button class="action-btn copy-btn" onclick="copyScenario('${category}-${index}')">📋 Copy</button>
+                                    <button class="action-btn claude-btn" onclick="openScenarioInClaude('${category}-${index}')">🤖 Open in Claude</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            });
+        }
+        
+        function toggleScenario(id) {
+            const content = document.getElementById('content-' + id);
+            const icon = document.getElementById('icon-' + id);
+            content.classList.toggle('expanded');
+            icon.classList.toggle('expanded');
+        }
+        
+        function copyPrompt() {
+            const context = document.getElementById('context').value;
+            const task = document.getElementById('task').value;
+            const constraints = document.getElementById('constraints').value;
+            
+            if (!context || !task || !constraints) {
+                alert('Please fill in all three sections!');
+                return;
+            }
+            
+            const prompt = `CONTEXT: ${context}\n\nTASK: ${task}\n\nCONSTRAINTS: ${constraints}`;
+            navigator.clipboard.writeText(prompt);
+            
+            const btn = document.getElementById('copy-btn');
+            btn.textContent = '✓ Copied!';
+            btn.classList.add('copied');
+            setTimeout(() => {
+                btn.textContent = '📋 Copy to Clipboard';
+                btn.classList.remove('copied');
+            }, 2000);
+        }
+        
+        function openInClaude() {
+            const context = document.getElementById('context').value;
+            const task = document.getElementById('task').value;
+            const constraints = document.getElementById('constraints').value;
+            
+            if (!context || !task || !constraints) {
+                alert('Please fill in all three sections!');
+                return;
+            }
+            
+            const prompt = `CONTEXT: ${context}\n\nTASK: ${task}\n\nCONSTRAINTS: ${constraints}`;
+            const encodedPrompt = encodeURIComponent(prompt);
+            window.open(`https://claude.ai/new?q=${encodedPrompt}`, '_blank');
+        }
+        
+        function copyScenario(id) {
+            const [category, index] = id.split('-');
+            const prompt = scenarios[category][parseInt(index)].prompt;
+            navigator.clipboard.writeText(prompt);
+            
+            const btn = event.target;
+            btn.textContent = '✓ Copied!';
+            setTimeout(() => {
+                btn.textContent = '📋 Copy';
+            }, 2000);
+        }
+        
+        function openScenarioInClaude(id) {
+            const [category, index] = id.split('-');
+            const prompt = scenarios[category][parseInt(index)].prompt;
+            const encodedPrompt = encodeURIComponent(prompt);
+            window.open(`https://claude.ai/new?q=${encodedPrompt}`, '_blank');
+        }
+        
+        createScenarioCards();
+    </script>
+</body>
+</html>

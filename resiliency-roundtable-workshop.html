@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resiliency Roundtable - AI Workshop - Jewish Learning Works</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 1000;
+            padding: 1rem 2rem;
+        }
+        
+        nav h1 {
+            color: #164B5C;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            padding: 0.5rem 1rem;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .nav-btn:hover {
+            background: #F4A460;
+            color: white;
+        }
+        
+        .nav-btn.active {
+            background: #164B5C;
+            color: white;
+        }
+        
+        main {
+            margin-top: 120px;
+            padding: 2rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        section {
+            min-height: 100vh;
+            padding: 3rem 0;
+            scroll-margin-top: 140px;
+        }
+        
+        h2 {
+            color: #164B5C;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        h3 {
+            color: #164B5C;
+            font-size: 1.8rem;
+            margin: 2rem 0 1rem 0;
+        }
+        
+        .intro-box {
+            background: linear-gradient(135deg, #164B5C 0%, #1a5f73 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: 12px;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        
+        .intro-box h2 {
+            color: #F4A460;
+            font-size: 3rem;
+        }
+        
+        .intro-box p {
+            font-size: 1.3rem;
+            margin: 1rem 0;
+        }
+        
+        .formula-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .formula-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            border-left: 4px solid #F4A460;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .formula-card .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .formula-card h4 {
+            color: #164B5C;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .comparison-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .comparison-card.weak {
+            border: 3px solid #dc3545;
+        }
+        
+        .comparison-card.strong {
+            border: 3px solid #28a745;
+        }
+        
+        .prompt-box {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+        }
+        
+        .output-box {
+            background: #fff9e6;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid #F4A460;
+        }
+        
+        button {
+            background: #164B5C;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: #1a5f73;
+            transform: translateY(-2px);
+        }
+        
+        .scenario-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .scenario-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .scenario-card:hover {
+            border-color: #F4A460;
+            box-shadow: 0 4px 12px rgba(244, 164, 96, 0.3);
+        }
+        
+        .scenario-card .emoji {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            min-height: 100px;
+            margin: 0.5rem 0;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #F4A460;
+        }
+        
+        .label {
+            font-weight: 600;
+            color: #164B5C;
+            display: block;
+            margin: 1rem 0 0.5rem 0;
+        }
+        
+        .highlight-box {
+            background: #fff9e6;
+            border-left: 4px solid #F4A460;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+        
+        .time-marker {
+            display: inline-block;
+            background: #164B5C;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin: 2rem 0;
+        }
+        
+        .protocol-example {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 2px solid #164B5C;
+            margin: 2rem 0;
+        }
+        
+        .protocol-step {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            border-left: 4px solid #F4A460;
+        }
+        
+        .protocol-step h4 {
+            color: #164B5C;
+            margin-bottom: 0.5rem;
+        }
+        
+        code {
+            background: #f8f9fa;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .quick-win-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #F4A460;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 0.5rem;">
+            <div style="width: 60px; height: 60px; background: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 8px;">
+                <div style="display: flex; gap: 3px;">
+                    <div style="width: 12px; height: 40px; background: #F4A460; border-radius: 0 20px 20px 0;"></div>
+                    <div style="width: 12px; height: 40px; background: #F4A460; border-radius: 20px 0 0 20px;"></div>
+                </div>
+            </div>
+            <div>
+                <h1>Resiliency Roundtable: AI for Teen Educators</h1>
+                <p style="color: #F4A460; font-size: 0.9rem; margin: 0;">Facilitated by Evan Wolkenstein | Jewish Learning Works</p>
+            </div>
+        </div>
+        <div class="nav-buttons">
+            <button class="nav-btn" onclick="scrollToSection('intro')">Introduction</button>
+            <button class="nav-btn" onclick="scrollToSection('formula')">3-Part Formula</button>
+            <button class="nav-btn" onclick="scrollToSection('comparison')">See The Difference</button>
+            <button class="nav-btn" onclick="scrollToSection('build')">Build Together</button>
+            <button class="nav-btn" onclick="scrollToSection('reflection')">Reflection Mastery</button>
+            <button class="nav-btn" onclick="scrollToSection('quickwins')">Quick Wins</button>
+        </div>
+    </nav>
+
+    <main>
+        <!-- SECTION 1: INTRODUCTION -->
+        <section id="intro">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <div style="width: 120px; height: 120px; background: #164B5C; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; padding: 20px; margin-bottom: 1rem;">
+                    <div style="display: flex; gap: 8px;">
+                        <div style="width: 20px; height: 80px; background: #F4A460; border-radius: 0 40px 40px 0;"></div>
+                        <div style="width: 20px; height: 80px; background: #F4A460; border-radius: 40px 0 0 40px;"></div>
+                    </div>
+                </div>
+                <h3 style="color: #164B5C; margin: 0.5rem 0;">Jewish Learning Works</h3>
+                <p style="color: #666; font-size: 0.9rem;">Resiliency Roundtable</p>
+            </div>
+            <div class="intro-box">
+                <h2>Stop Getting Mediocre Results from AI</h2>
+                <p>The difference between frustrating AI responses and genuinely helpful ones?</p>
+                <p style="font-size: 1.8rem; font-weight: bold; color: #F4A460;">How you structure your prompt.</p>
+                <p style="font-size: 1rem; margin-top: 2rem; opacity: 0.9;">Facilitated by Evan Wolkenstein</p>
+            </div>
+        </section>
+
+        <!-- SECTION 2: THE FORMULA -->
+        <section id="formula">
+            <h2>The 3-Part Formula</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem;">Every effective AI prompt needs these three elements:</p>
+            
+            <div class="formula-grid">
+                <div class="formula-card">
+                    <div class="icon">🎯</div>
+                    <h4>Context</h4>
+                    <p>Give AI the background it needs</p>
+                    <ul style="margin-top: 1rem;">
+                        <li>Who are you?</li>
+                        <li>Who's your audience?</li>
+                        <li>What's the situation?</li>
+                    </ul>
+                </div>
+                
+                <div class="formula-card">
+                    <div class="icon">✍️</div>
+                    <h4>Task</h4>
+                    <p>Be specific about what you want</p>
+                    <ul style="margin-top: 1rem;">
+                        <li>What do you need created?</li>
+                        <li>What's the goal?</li>
+                        <li>What format?</li>
+                    </ul>
+                </div>
+                
+                <div class="formula-card">
+                    <div class="icon">⚡</div>
+                    <h4>Constraints</h4>
+                    <p>Set the boundaries</p>
+                    <ul style="margin-top: 1rem;">
+                        <li>Tone & style</li>
+                        <li>Length limits</li>
+                        <li>What to include/avoid</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: COMPARISON -->
+        <section id="comparison">
+            <h2>See The Difference</h2>
+            
+            <div class="comparison-grid">
+                <div class="comparison-card weak">
+                    <h3 style="color: #dc3545;">❌ Weak Prompt</h3>
+                    <div class="prompt-box">
+                        "Generate Socratic seminar questions about Night by Elie Wiesel"
+                    </div>
+                    <button onclick="toggleOutput('weak')">Show AI Output</button>
+                    <div id="weak-output" style="display: none;" class="output-box">
+                        <p><strong>What AI Actually Gives You:</strong></p>
+                        <ol>
+                            <li>What is the main theme of Night?</li>
+                            <li>How does Elie's relationship with his father change throughout the book?</li>
+                            <li>What role does faith play in the story?</li>
+                            <li>Why do you think Elie Wiesel wrote this book?</li>
+                            <li>What emotions did you feel while reading?</li>
+                            <li>How does the title "Night" relate to the book's themes?</li>
+                            <li>What did you learn about the Holocaust from this book?</li>
+                            <li>Would you recommend this book to others? Why or why not?</li>
+                        </ol>
+                        <p style="margin-top: 1rem; color: #dc3545; font-weight: 600;">⚠️ Generic book club questions. Could apply to any Holocaust text. No scaffolding. Mixes easy and hard questions randomly. Doesn't account for 13-year-olds or personal connections.</p>
+                    </div>
+                </div>
+                
+                <div class="comparison-card strong">
+                    <h3 style="color: #28a745;">✅ Strong Prompt</h3>
+                    <div class="prompt-box">
+                        <strong>CONTEXT:</strong> I'm facilitating a Socratic seminar with 13-year-olds (8th graders) who just read the first three chapters of Night by Elie Wiesel. This is their first Holocaust text. Some students are from families with Holocaust connections, others are learning about it for the first time.<br><br>
+                        <strong>TASK:</strong> Generate 8-10 questions that move from concrete/text-based to analytical to philosophical.<br><br>
+                        <strong>CONSTRAINTS:</strong> Start with questions that ground us in the text. Build to harder questions about faith, humanity, and memory. Create productive tension but honor that some students may have personal connections to this history. Questions should help students sit with difficulty, not resolve it too quickly.
+                    </div>
+                    <button onclick="toggleOutput('strong')">Show AI Output</button>
+                    <div id="strong-output" style="display: none;" class="output-box">
+                        <p><strong>What AI Actually Gives You:</strong></p>
+                        
+                        <p><strong>Text-Based (Concrete - Ground Everyone):</strong></p>
+                        <ol>
+                            <li>In Chapter 1, Moishe the Beadle returns to Sighet with a warning. What specifically does he tell people, and how do they respond?</li>
+                            <li>Find a moment in Chapters 1-3 where Elie describes something changing in his town. Read that passage aloud. What's happening?</li>
+                            <li>Elie writes, "Never shall I forget that night..." (page 34). What is he listing in this passage? Why do you think he repeats "Never shall I forget"?</li>
+                        </ol>
+                        
+                        <p><strong>Analytical (Making Meaning):</strong></p>
+                        <ol start="4">
+                            <li>People in Sighet don't believe Moishe's warning. Why not? What would it take for you to believe something that horrible?</li>
+                            <li>Elie's father is a community leader. How does that affect the choices their family makes - or doesn't make?</li>
+                            <li>Elie describes the journey from Sighet to Auschwitz. What changes happen to people during that journey - even before they arrive?</li>
+                        </ol>
+                        
+                        <p><strong>Philosophical (Sitting with Hard Questions):</strong></p>
+                        <ol start="7">
+                            <li>Elie begins questioning God in these chapters. Is it possible to be angry at God and still be Jewish? What does faith look like when the world doesn't make sense?</li>
+                            <li>By Chapter 3, Elie writes, "Never shall I forget those moments that murdered my God and my soul." Can a soul be murdered? What does that mean?</li>
+                            <li>The people in Sighet kept hoping things wouldn't get worse. When - if ever - is hope dangerous?</li>
+                            <li>At the end of Chapter 3, Elie is separated from his mother and sister forever. He writes about that moment but doesn't tell us his feelings. Why might he have written it that way?</li>
+                        </ol>
+                        
+                        <p style="margin-top: 1rem; color: #28a745; font-weight: 600;">✓ Scaffolded progression. Text-specific. Creates space for personal response while keeping focus on the text. Honors the weight of the material. Age-appropriate cognitive complexity.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="highlight-box">
+                <p><strong>💡 Key Insight:</strong> The weak prompt gives you generic questions you could ask about any book. The strong prompt gives you a carefully sequenced discussion that meets 13-year-olds where they are, grounds everyone in the text first, then builds to the hard philosophical questions - while creating space for students with family connections to this history.</p>
+            </div>
+        </section>
+
+        <!-- SECTION 4: BUILD TOGETHER -->
+        <section id="build">
+            <h2>Build Your Own Prompt</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem;">Let's build one together as a group! Choose a scenario or share your own:</p>
+            
+            <div class="scenario-cards">
+                <div class="scenario-card" onclick="loadScenario('framing')">
+                    <div class="emoji">🎭</div>
+                    <h4>Frontloading an Activity</h4>
+                    <p>Generate framing language for a ropes course challenge that primes for leadership learning</p>
+                </div>
+                
+                <div class="scenario-card" onclick="loadScenario('conflict')">
+                    <div class="emoji">💬</div>
+                    <h4>Processing Conflict</h4>
+                    <p>Create restorative conversation guide after students had heated debate about controversial topic</p>
+                </div>
+                
+                <div class="scenario-card" onclick="loadScenario('centering')">
+                    <div class="emoji">🌟</div>
+                    <h4>Centering Marginalized Voices</h4>
+                    <p>Adapt this history lesson to include perspectives from specific underrepresented community</p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 3rem;">
+                <label class="label">🎯 CONTEXT: Who are you? Who's your audience? What's the situation?</label>
+                <textarea id="context" placeholder="Example: I'm leading a wilderness trip with 15 tenth-graders who are about to do a high ropes course..."></textarea>
+                
+                <label class="label">✍️ TASK: What do you need? What's the goal?</label>
+                <textarea id="task" placeholder="Example: Generate framing language that primes them to notice leadership moments..."></textarea>
+                
+                <label class="label">⚡ CONSTRAINTS: Tone, length, what to include/avoid?</label>
+                <textarea id="constraints" placeholder="Example: Keep it under 3 minutes. Use 'challenge by choice' language. Don't lecture—invite reflection..."></textarea>
+                
+                <button onclick="buildPrompt()" style="width: 100%; margin-top: 1rem; padding: 1rem; font-size: 1.1rem;">Build My Prompt →</button>
+                
+                <div id="built-prompt" style="display: none; margin-top: 2rem;">
+                    <h3>Your Structured Prompt:</h3>
+                    <div class="prompt-box" id="prompt-output"></div>
+                    <p style="margin-top: 1rem; color: #666;">💡 Copy this and paste it into Claude, ChatGPT, or any AI tool!</p>
+                </div>
+            </div>
+            
+            <span class="time-marker">⏱️ Section 1 Complete: 10 minutes</span>
+        </section>
+
+        <!-- SECTION 5: REFLECTION MASTERY -->
+        <section id="reflection">
+            <h2>Reflection Prompting Mastery</h2>
+            <p style="font-size: 1.3rem; margin-bottom: 2rem;">Moving beyond "How did that feel?" to prompts that reveal transferable insights</p>
+            
+            <div class="highlight-box">
+                <h3>The Problem</h3>
+                <p><strong>Bad reflection prompts:</strong></p>
+                <ul>
+                    <li>"How did that make you feel?"</li>
+                    <li>"What did you learn?"</li>
+                    <li>"Did you have fun?"</li>
+                </ul>
+                <p style="margin-top: 1rem;"><strong>Why they fail:</strong> Surface-level, generic, don't connect experience to meaning</p>
+                
+                <h3 style="margin-top: 2rem;">The Solution</h3>
+                <p><strong>Great reflection prompts:</strong></p>
+                <ul>
+                    <li>Create cognitive dissonance ("I thought X would happen, but Y happened instead...")</li>
+                    <li>Use metaphor to unlock meaning ("If this experience was a season, which would it be and why?")</li>
+                    <li>Connect to transfer ("When have you felt this same tension in your real life?")</li>
+                    <li>Honor different processing styles (talking, writing, drawing, moving)</li>
+                </ul>
+            </div>
+            
+            <h3>The Protocol: Reflection Prompt Generator</h3>
+            
+            <div class="protocol-example">
+                <h4>STEP 1: The Template</h4>
+                <div class="protocol-step">
+                    <p><strong>What educators fill in (2 minutes of notes):</strong></p>
+                    <p><code>[What experience did students just have?]</code><br>
+                    Example: "We just did a trust fall exercise where they had to catch each other"</p>
+                    
+                    <p style="margin-top: 1rem;"><code>[What's the core insight you want them to discover?]</code><br>
+                    Example: "Vulnerability is a prerequisite for trust, not a result of it"</p>
+                    
+                    <p style="margin-top: 1rem;"><code>[What format works for this group?]</code><br>
+                    Example: "Talking circle - they're good at speaking, resistant to writing"</p>
+                </div>
+                
+                <h4>STEP 2: AI Generates</h4>
+                <div class="protocol-step">
+                    <p><strong>What AI creates:</strong></p>
+                    <p><strong>Opening Questions (Concrete):</strong></p>
+                    <ul>
+                        <li>"At what exact moment did you decide to let go and fall? What was happening in your body?"</li>
+                        <li>"What did you notice about the people catching you before you fell?"</li>
+                    </ul>
+                    
+                    <p style="margin-top: 1rem;"><strong>Deepening Questions (Analysis):</strong></p>
+                    <ul>
+                        <li>"I'm curious—did you need to trust them before you fell, or did trust happen after? Explain."</li>
+                        <li>"What had to be true for you to let go? What did you need from them?"</li>
+                    </ul>
+                    
+                    <p style="margin-top: 1rem;"><strong>Transfer Questions (Application):</strong></p>
+                    <ul>
+                        <li>"Where in your real life are you waiting to feel safe before you're vulnerable? What if it doesn't work that way?"</li>
+                        <li>"This week, where might you need to 'fall' before trust can happen?"</li>
+                    </ul>
+                </div>
+                
+                <h4>STEP 3: Educator Refines</h4>
+                <div class="protocol-step">
+                    <p>Read through, adjust language to match your voice, add student names where helpful, pick the 4-5 questions that feel most powerful</p>
+                </div>
+            </div>
+            
+            <div class="highlight-box">
+                <p><strong>🎯 The Power Move:</strong> AI handles the cognitive scaffolding (concrete → analysis → transfer). You bring the knowing of your students and the magic of your facilitation.</p>
+            </div>
+            
+            <h3>Variations You Can Generate</h3>
+            <div class="formula-grid">
+                <div class="formula-card">
+                    <h4>Metaphor Prompts</h4>
+                    <p>"If this experience was a song/season/weather pattern, what would it be and why?"</p>
+                </div>
+                <div class="formula-card">
+                    <h4>Movement-Based</h4>
+                    <p>"Show me with your body: What was your posture at the beginning vs. the end?"</p>
+                </div>
+                <div class="formula-card">
+                    <h4>Art-Making</h4>
+                    <p>"Draw the before/after or the moment of insight. No words needed yet."</p>
+                </div>
+            </div>
+            
+            <span class="time-marker">⏱️ Section 2 Complete: 20 minutes total</span>
+        </section>
+
+        <!-- SECTION 6: QUICK WINS -->
+        <section id="quickwins">
+            <h2>Quick Wins Across Teaching Domains</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem;">The same prompt framework works for all your top-voted needs. Here are three rapid examples:</p>
+            
+            <div class="quick-win-card">
+                <h3>🌟 Culturally Responsive Curriculum (5 votes)</h3>
+                <p><strong>The Challenge:</strong> You have a great lesson on the Civil Rights Movement, but it centers Rosa Parks and MLK exclusively. You want to include local activists and lesser-known voices.</p>
+                
+                <div class="prompt-box" style="margin: 1rem 0;">
+                    <strong>CONTEXT:</strong> I'm teaching 9th grade US History. We're studying the Civil Rights Movement. My students are mostly Latinx and Asian American in Oakland, CA.<br><br>
+                    <strong>TASK:</strong> Adapt this lesson to center Oakland's own Civil Rights history and connect it to movements students' families might have been part of (Chicano movement, Asian American activism, immigrant rights).<br><br>
+                    <strong>CONSTRAINTS:</strong> Don't erase the national narrative—show how local and national connect. Include 3-4 primary sources (images, quotes, newspaper clips). Make it relevant to their neighborhoods today.
+                </div>
+                
+                <div class="output-box">
+                    <p><strong>What AI gives you:</strong></p>
+                    <ul>
+                        <li>The Black Panther Party's Free Breakfast Program (started in Oakland)</li>
+                        <li>Yuri Kochiyama's solidarity between Black and Asian American communities</li>
+                        <li>The Third World Liberation Front strike at SF State (1968)</li>
+                        <li>Connection to current housing justice movements in Oakland</li>
+                        <li>Primary source: Photo of Black Panthers and Brown Berets together</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="quick-win-card">
+                <h3>💬 Discussion Facilitation (3 votes)</h3>
+                <p><strong>The Challenge:</strong> You're about to facilitate a philosophical chairs discussion on a hot-button topic and need questions that create productive tension without blowing up the room.</p>
+                
+                <div class="prompt-box" style="margin: 1rem 0;">
+                    <strong>CONTEXT:</strong> Teaching 11th grade Literature. Students just read "The Ones Who Walk Away from Omelas" (the town's happiness depends on one child's suffering). Half my students are very progressive, half are more conservative. The discussion could get heated.<br><br>
+                    <strong>TASK:</strong> Generate 6-8 philosophical chairs prompts that scaffold from easier to harder, from textual to philosophical.<br><br>
+                    <strong>CONSTRAINTS:</strong> Avoid prompts that let students virtue-signal. Force real moral reckoning. Balance individual ethics vs. collective good. Make sure there are legitimate reasons to stand on either side.
+                </div>
+                
+                <div class="output-box">
+                    <p><strong>Sample prompts AI generates:</strong></p>
+                    <ul>
+                        <li><strong>Easier:</strong> "The people of Omelas are morally responsible for the child's suffering." (Agree/Disagree)</li>
+                        <li><strong>Medium:</strong> "If you could end all poverty by causing one specific person to suffer in a basement, you should do it." (Forces personal stake)</li>
+                        <li><strong>Harder:</strong> "Your comfort right now depends on someone else's suffering, and you're okay with that." (Direct application)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="quick-win-card">
+                <h3>🎨 Differentiated Instruction (3 votes)</h3>
+                <p><strong>The Challenge:</strong> You have neurodiverse learners who need the same content delivered differently.</p>
+                
+                <div class="prompt-box" style="margin: 1rem 0;">
+                    <strong>CONTEXT:</strong> Teaching photosynthesis to 7th graders. I have students with ADHD, autism, dyslexia, and anxiety. They need multiple entry points to the same concept.<br><br>
+                    <strong>TASK:</strong> Create 4 versions of the same lesson for different learning styles: visual/spatial, kinesthetic/movement, verbal/linguistic, and logical/sequential.<br><br>
+                    <strong>CONSTRAINTS:</strong> Same learning goal (understand how plants convert light to energy). Same time limit (20 minutes). Assessment should work for all versions.
+                </div>
+                
+                <div class="output-box">
+                    <p><strong>What AI gives you:</strong></p>
+                    <p><strong>Visual/Spatial:</strong> Diagram-building activity with color-coded arrows showing energy flow</p>
+                    <p><strong>Kinesthetic:</strong> Students become molecules—physical movement simulation of the process</p>
+                    <p><strong>Verbal/Linguistic:</strong> Write the "autobiography" of a water molecule going through photosynthesis</p>
+                    <p><strong>Logical/Sequential:</strong> Flowchart creation with if/then decision points</p>
+                </div>
+            </div>
+            
+            <div class="highlight-box">
+                <p><strong>🔑 The Pattern:</strong></p>
+                <ul>
+                    <li>Your expertise (knowing your students, your content, your goals)</li>
+                    <li>+ AI's speed (generating variations, finding examples, scaffolding questions)</li>
+                    <li>+ Your finishing touches (adjusting language, adding your voice, customizing)</li>
+                    <li>= Better teaching in less time</li>
+                </ul>
+            </div>
+            
+            <span class="time-marker">⏱️ Section 3 Complete: 30 minutes total</span>
+        </section>
+    </main>
+
+    <script>
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+            
+            // Update active button
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+        
+        function toggleOutput(type) {
+            const output = document.getElementById(type + '-output');
+            output.style.display = output.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        function loadScenario(type) {
+            const scenarios = {
+                framing: {
+                    context: "I'm leading a wilderness trip with 15 tenth-graders. They're about to do a high ropes course—an individual challenge where they climb 30 feet up and walk across a suspended log. Some are confident, some are terrified. We've been talking about leadership all week.",
+                    task: "Generate framing language (2-3 minutes of spoken intro) that primes them to notice leadership moments during the challenge—both for the person on the ropes and for the people on the ground supporting them.",
+                    constraints: "Use 'challenge by choice' language (they can choose their level of challenge). Don't lecture. Invite reflection. Plant seeds they'll return to in the debrief. Make it feel exciting, not preachy."
+                },
+                conflict: {
+                    context: "I teach 11th grade US History. Yesterday we had a heated debate about reparations. Two students got emotional and said hurtful things to each other across racial lines. The class ended tense. We need to process this tomorrow before we can move forward.",
+                    task: "Create a restorative conversation guide for a 30-minute circle. Help students name what happened, understand impact, and rebuild trust without forcing fake reconciliation.",
+                    constraints: "Start with a grounding activity. Use 'I statements' and impact/intent language. Give space for emotions but keep it from re-escalating. End with a commitment to move forward, not demands for apologies. Honor that repair takes time."
+                },
+                centering: {
+                    context: "I'm teaching 9th grade World History. Our unit on colonialism is very Eurocentric—it's all about what European powers did TO colonized peoples. I want to center indigenous resistance, survival, and self-determination instead.",
+                    task: "Redesign this unit to center indigenous perspectives. Show agency, not just victimhood. Include counter-narratives where colonized peoples shaped their own futures.",
+                    constraints: "Don't erase the violence, but don't make it the whole story. Use primary sources from indigenous voices. Connect historical resistance to contemporary indigenous movements. Make students see colonized peoples as strategic actors, not passive victims."
+                }
+            };
+            
+            const scenario = scenarios[type];
+            document.getElementById('context').value = scenario.context;
+            document.getElementById('task').value = scenario.task;
+            document.getElementById('constraints').value = scenario.constraints;
+            
+            // Scroll to the builder
+            document.getElementById('build').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function buildPrompt() {
+            const context = document.getElementById('context').value;
+            const task = document.getElementById('task').value;
+            const constraints = document.getElementById('constraints').value;
+            
+            if (!context || !task || !constraints) {
+                alert('Please fill in all three sections!');
+                return;
+            }
+            
+            const prompt = `CONTEXT: ${context}\n\nTASK: ${task}\n\nCONSTRAINTS: ${constraints}`;
+            
+            document.getElementById('prompt-output').textContent = prompt;
+            document.getElementById('built-prompt').style.display = 'block';
+            
+            // Scroll to show the output
+            document.getElementById('built-prompt').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Update active nav button on scroll
+        window.addEventListener('scroll', () => {
+            const sections = ['intro', 'formula', 'comparison', 'build', 'reflection', 'quickwins'];
+            const scrollPos = window.scrollY + 200;
+            
+            sections.forEach(section => {
+                const element = document.getElementById(section);
+                if (element && scrollPos >= element.offsetTop) {
+                    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+                    document.querySelector(`[onclick="scrollToSection('${section}')"]`)?.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
